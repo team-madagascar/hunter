@@ -1,0 +1,1 @@
+{"version":3,"sources":["app/index.ts"],"names":[],"mappings":";AAMA,aAJA,SAAS,EAAK,GACZ,QAAQ,IAAI,GAGd,OAAA,eAAA,QAAA,aAAA,CAAA,OAAA,IANA,QAAQ,IAAI,iBAMZ,EAAK","file":"app.67b5234d.js","sourceRoot":"..\\src","sourcesContent":["console.log('Hello, World!');\n\nfunction test(field: string) {\n  console.log(field);\n}\n\ntest('1234');\n\nexport {};\n"]}

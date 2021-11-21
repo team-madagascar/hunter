@@ -13,7 +13,8 @@
     "clean": "gts clean",
     "fix": "gts fix",
     "dev": "parcel src/index.html",
-    "build": "npm run clean && npm run check && parcel build src/index.html",
+    "parcel-build": "parcel build src/index.html",
+    "build": "npm run check && npm run clean && npm run parcel-build",
     "precommit": "npm run fix && npm run test && npm run build"
   },
   "devDependencies": {
