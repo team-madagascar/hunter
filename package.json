@@ -1,0 +1,31 @@
+{
+  "name": "hunter",
+  "version": "0.0.1",
+  "description": "",
+  "files": [
+    "build/src"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [],
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "jest",
+    "clean": "gts clean",
+    "fix": "gts fix",
+    "dev": "parcel src/index.html",
+    "build": "npm run clean && npm run check && parcel build src/index.html",
+    "precommit": "npm run fix && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@types/jest": "27.0.3",
+    "@types/node": "14.17.34",
+    "eslint-plugin-jest": "25.2.4",
+    "gts": "3.1.0",
+    "jest": "27.3.1",
+    "parcel": "2.0.1",
+    "parcel-bundler": "1.12.5",
+    "ts-jest": "27.0.7",
+    "ts-mockito": "2.6.1",
+    "typescript": "4.4.4"
+  }
+}
