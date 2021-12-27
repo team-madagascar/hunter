@@ -40,17 +40,16 @@ export class Hunter implements Drawable {
         .scale(this.velocity * secondsPassed)
         .add(this.shape.center);
     }
+    gameContext.gameOver = this.checkBoundary();
   }
 
-  checkBoundary() {
-    if (
+  checkBoundary(): boolean {
+    return (
       this.position.x - this.shape.radius < -FIELD_WIDTH / 2 ||
       this.position.x + this.shape.radius > FIELD_WIDTH / 2 ||
       this.position.y - this.shape.radius < -FIELD_HEIGHT / 2 ||
       this.position.y + this.shape.radius > FIELD_HEIGHT / 2
-    ) {
-      this._isAlive = false;
-    }
+    );
   }
 
   get isAlive(): boolean {
