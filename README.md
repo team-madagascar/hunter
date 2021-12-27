@@ -1,2 +1,6 @@
 # Lab 2(A)
-[Try it](https://team-madagascar.github.io/hunter/dist/index.html)
+Run
+
+1. npm install
+1. npm run build
+1. /dist/index.html 
