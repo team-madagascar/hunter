@@ -20,8 +20,8 @@ function createDeferredPromise<T>(): Deferred<T> {
 }
 
 export class GameLoop {
-  private secondsPassed;
-  private oldTimeStamp;
+  private secondsPassed = 0;
+  private oldTimeStamp = 0;
   private end = createDeferredPromise<never>();
   constructor(
     private readonly updater: GameStateUpdater,
@@ -40,7 +40,7 @@ export class GameLoop {
     this.updater.update(this.secondsPassed);
     this.drawer.draw();
     if (this.gameContext.gameOver) {
-      alert('Game is over!');
+      this.drawer.gameOver();
       this.end.resolve({});
       return;
     }

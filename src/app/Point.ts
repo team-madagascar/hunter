@@ -42,6 +42,10 @@ export class Point {
     return this.x * point.x + this.y * point.y;
   }
 
+  distance(point: Point): number {
+    return point.subtract(this).length;
+  }
+
   /**
    * Единичный вектор
    */

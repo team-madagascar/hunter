@@ -36,11 +36,15 @@ export class Hunter implements Drawable {
   update(secondsPassed: number, gameContext: GameContext): void {
     if (this._direction !== null) {
       this.checkBoundary();
+      console.log('H: ' + secondsPassed);
       this.shape.center = this._direction
         .scale(this.velocity * secondsPassed)
         .add(this.shape.center);
     }
     gameContext.gameOver = this.checkBoundary();
+    if (gameContext.gameOver) {
+      gameContext.gameResult = 'You are dead!';
+    }
   }
 
   checkBoundary(): boolean {

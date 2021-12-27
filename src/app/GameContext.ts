@@ -9,7 +9,8 @@ export class GameContext {
     public readonly hunter: Hunter,
     private _drawables: Drawable[],
     private readonly canvas: HTMLCanvasElement,
-    public gameOver: boolean = false
+    public gameOver: boolean = false,
+    public gameResult: string = ''
   ) {}
 
   mapCanvasPointToGameFieldPoint(canvasPoint: Point): Point {
