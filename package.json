@@ -13,7 +13,7 @@
     "clean": "gts clean",
     "fix": "gts fix",
     "dev": "parcel src/index.html",
-    "parcel-build": "parcel build src/index.html --public-url . ",
+    "parcel-build": "parcel build src/index.html --no-minify --public-url . ",
     "build": "npm run check && npm run clean && npm run parcel-build",
     "precommit": "npm run fix && npm run test && npm run build"
   },
