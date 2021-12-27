@@ -1,7 +1,12 @@
 import {Circle} from './Circle';
 import {Point} from './Point';
 import {GameContext} from './GameContext';
-import {FIELD_HEIGHT, FIELD_WIDTH} from './constants';
+import {
+  FIELD_HEIGHT,
+  FIELD_WIDTH,
+  GAME_FIELD_HEIGHT,
+  GAME_FIELD_WIDTH,
+} from './constants';
 
 export class Animal extends Circle {
   private _isAlive = true;
@@ -43,10 +48,18 @@ export class Animal extends Circle {
       this.currentDistance += distance;
       if (this.currentDistance >= this.maxDistance) {
         this.currentDistance = 0;
+        this.maxDistance = 400;
         this._direction = Animal.randomDirection();
       }
-      const scale = this._direction.scale(distance);
-      this.center = scale.add(this.center);
+      const prevCenter = this.center;
+      this.center = this._direction.scale(distance).add(this.center);
+
+      while (this.checkBoundary()) {
+        this._direction = Animal.randomDirection();
+        this.currentDistance = 0;
+        this.maxDistance = 1000;
+        this.center = this._direction.scale(distance * 5).add(prevCenter);
+      }
     }
   }
 
@@ -56,10 +69,10 @@ export class Animal extends Circle {
 
   checkBoundary(): boolean {
     return (
-      this.center.x - this.radius < -FIELD_WIDTH / 2 ||
-      this.center.x + this.radius > FIELD_WIDTH / 2 ||
-      this.center.y - this.radius < -FIELD_HEIGHT / 2 ||
-      this.center.y + this.radius > FIELD_HEIGHT / 2
+      this.center.x - this.radius < -GAME_FIELD_WIDTH ||
+      this.center.x + this.radius > GAME_FIELD_WIDTH ||
+      this.center.y - this.radius < -GAME_FIELD_HEIGHT ||
+      this.center.y + this.radius > GAME_FIELD_HEIGHT
     );
   }
 
@@ -83,14 +96,16 @@ export class Animal extends Circle {
   }
 
   private static randomPosition() {
-    return Point.of(
-      Animal.randomWithinInterval(1000, FIELD_WIDTH - 1000),
-      Animal.randomWithinInterval(1000, FIELD_HEIGHT - 1000)
+    const gap = 500;
+    const point = Point.of(
+      Animal.randomWithinInterval(gap, GAME_FIELD_WIDTH - gap),
+      Animal.randomWithinInterval(gap, GAME_FIELD_HEIGHT - gap)
     );
+    return point;
   }
 
   private static randomWithinInterval(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   private static randomSign(): number {

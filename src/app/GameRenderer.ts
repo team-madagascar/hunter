@@ -37,7 +37,7 @@ export class GameRenderer {
     this.ctx.beginPath();
 
     for (let i = -GRID_COUNT; i <= GRID_COUNT; i++) {
-      this.ctx.moveTo(i * GRID_WIDTH, -FIELD_WIDTH / 2);
+      this.ctx.moveTo(i * GRID_WIDTH, -(FIELD_WIDTH / 2));
       this.ctx.lineTo(i * GRID_WIDTH, FIELD_WIDTH / 2);
       this.ctx.moveTo(-FIELD_HEIGHT / 2, i * GRID_WIDTH);
       this.ctx.lineTo(FIELD_HEIGHT / 2, i * GRID_WIDTH);

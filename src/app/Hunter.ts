@@ -2,7 +2,12 @@ import {Drawable} from './Drawable';
 import {Circle} from './Circle';
 import {Point} from './Point';
 import {FrameRenderingContext} from './FrameRenderingContext';
-import {FIELD_HEIGHT, FIELD_WIDTH} from './constants';
+import {
+  FIELD_HEIGHT,
+  FIELD_WIDTH,
+  GAME_FIELD_HEIGHT,
+  GAME_FIELD_WIDTH,
+} from './constants';
 import {GameContext} from './GameContext';
 
 export class Hunter implements Drawable {
@@ -49,10 +54,10 @@ export class Hunter implements Drawable {
 
   checkBoundary(): boolean {
     return (
-      this.position.x - this.shape.radius < -FIELD_WIDTH / 2 ||
-      this.position.x + this.shape.radius > FIELD_WIDTH / 2 ||
-      this.position.y - this.shape.radius < -FIELD_HEIGHT / 2 ||
-      this.position.y + this.shape.radius > FIELD_HEIGHT / 2
+      this.position.x - this.shape.radius < -GAME_FIELD_WIDTH ||
+      this.position.x + this.shape.radius > GAME_FIELD_WIDTH ||
+      this.position.y - this.shape.radius < -GAME_FIELD_HEIGHT ||
+      this.position.y + this.shape.radius > GAME_FIELD_HEIGHT
     );
   }
 

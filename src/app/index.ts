@@ -12,6 +12,14 @@ import {Animal} from './Animal';
 const canvas = document.getElementById('game-field') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
+function addAnimals() {
+  const animals = [];
+  for (let i = 0; i < 15; i++) {
+    animals.push(new Animal());
+  }
+  return animals;
+}
+
 function runGame() {
   const hunter = new Hunter(
     50,
@@ -20,10 +28,7 @@ function runGame() {
     500
   );
 
-  const animals = [];
-  for (let i = 0; i < 15; i++) {
-    animals.push(new Animal());
-  }
+  const animals = addAnimals();
 
   const gameContext = new GameContext(hunter, [hunter, ...animals], canvas);
   const mouseListener = new MouseListener(gameContext);
