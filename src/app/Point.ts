@@ -1,21 +1,11 @@
 /**
  * Represent point and vector
- * Point implements Flyweight pattern so it can be stored in Set and used as key in Map.
- * Point.create(0, 0) === Point.create(0.0) // true
  */
 export class Point {
-  private static pool: Map<string, Point> = new Map();
-
   private constructor(readonly x: number, readonly y: number) {}
 
   static of(x: number, y: number): Point {
-    const key = `${x}:${y}`;
-    let point = this.pool.get(key);
-    if (point === undefined) {
-      point = new Point(x, y);
-      this.pool.set(key, point);
-    }
-    return point;
+    return new Point(x, y);
   }
 
   static vector(start: Point, end: Point): Point {
@@ -56,7 +46,7 @@ export class Point {
    * Единичный вектор
    */
   unit(): Point {
-    return this.divide(this.length);
+    return this.length ? this.scale(1 / this.length) : Point.of(0, 0);
   }
 
   scale(scale: number): Point {
@@ -69,6 +59,10 @@ export class Point {
 
   get length(): number {
     return Math.sqrt(this.dot(this));
+  }
+
+  equals(p: Point): boolean {
+    return this.x === p.x && this.y === p.y;
   }
 
   toString(): string {
