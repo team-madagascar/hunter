@@ -10,6 +10,7 @@ import {
 import {FrameRenderingContext} from './FrameRenderingContext';
 import {GameContext} from './GameContext';
 import {MouseListener} from './MouseListener';
+import {Hunter} from './Hunter';
 
 export class GameRenderer {
   constructor(
@@ -26,14 +27,27 @@ export class GameRenderer {
 
   draw() {
     const hunter = this.gameContext.hunter;
-    this.ctx.fillStyle = BG_COLOR;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawBackground();
+    this.alignToPlayerPosition(hunter);
+    this.drawGrid();
+    this.renderDrawables();
+    this.drawCrossline();
+    this.drawInfo(hunter);
+  }
 
+  private alignToPlayerPosition(hunter: Hunter) {
     this.ctx.save();
-
     this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
     this.ctx.scale(SCALE, SCALE);
     this.ctx.translate(-hunter.position.x, -hunter.position.y);
+  }
+
+  private drawBackground() {
+    this.ctx.fillStyle = BG_COLOR;
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  private drawGrid() {
     this.ctx.beginPath();
 
     for (let i = -GRID_COUNT; i <= GRID_COUNT; i++) {
@@ -44,7 +58,9 @@ export class GameRenderer {
     }
     this.ctx.strokeStyle = 'rgba(255,255,255,0.4)';
     this.ctx.stroke();
-    this.renderDrawables();
+  }
+
+  private drawCrossline() {
     this.ctx.restore();
     this.ctx.font = '20px Arial';
     this.ctx.fillStyle = 'white';
@@ -65,6 +81,16 @@ export class GameRenderer {
     this.drawLine(Point.of(0, -len), Point.of(0, len));
     this.ctx.stroke();
     this.ctx.restore();
+  }
+
+  private drawInfo(hunter: Hunter) {
+    this.ctx.font = '25px Arial';
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText(
+      `Bullets: ${hunter.bulletsCount}, Animals: ${this.gameContext.animals.length}`,
+      10,
+      30
+    );
   }
 
   gameOver() {

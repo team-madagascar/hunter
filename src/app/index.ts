@@ -14,7 +14,7 @@ const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
 function addAnimals() {
   const animals = [];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 10; i++) {
     animals.push(new Animal());
   }
   return animals;
