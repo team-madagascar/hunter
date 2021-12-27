@@ -67,6 +67,10 @@ export class GameRenderer {
     this.ctx.restore();
   }
 
+  gameOver() {
+    alert(this.gameContext.gameResult);
+  }
+
   private renderDrawables() {
     this.gameContext.drawables.forEach(d =>
       d.render(new FrameRenderingContext(this.ctx))

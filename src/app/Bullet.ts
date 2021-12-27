@@ -9,7 +9,7 @@ export class Bullet extends Circle {
   constructor(
     pos: Point,
     private readonly direction: Point,
-    private readonly velocity: number = 800,
+    private readonly velocity: number = 1000,
     private readonly maxDistance: number = 700
   ) {
     super(pos, 5, 'red');

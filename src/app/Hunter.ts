@@ -36,21 +36,24 @@ export class Hunter implements Drawable {
   update(secondsPassed: number, gameContext: GameContext): void {
     if (this._direction !== null) {
       this.checkBoundary();
+      console.log('H: ' + secondsPassed);
       this.shape.center = this._direction
         .scale(this.velocity * secondsPassed)
         .add(this.shape.center);
     }
+    gameContext.gameOver = this.checkBoundary();
+    if (gameContext.gameOver) {
+      gameContext.gameResult = 'You are dead!';
+    }
   }
 
-  checkBoundary() {
-    if (
+  checkBoundary(): boolean {
+    return (
       this.position.x - this.shape.radius < -FIELD_WIDTH / 2 ||
       this.position.x + this.shape.radius > FIELD_WIDTH / 2 ||
       this.position.y - this.shape.radius < -FIELD_HEIGHT / 2 ||
       this.position.y + this.shape.radius > FIELD_HEIGHT / 2
-    ) {
-      this._isAlive = false;
-    }
+    );
   }
 
   get isAlive(): boolean {

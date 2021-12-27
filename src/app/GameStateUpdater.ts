@@ -16,6 +16,14 @@ export class GameStateUpdater {
     this.updateHunterMovementDirection();
     this.updateDrawables(secondsPassed);
     this.updateGun();
+    this.checkGameIsEnd();
+  }
+
+  private checkGameIsEnd() {
+    if (this.gameContext.animals.length === 0) {
+      this.gameContext.gameOver = true;
+      this.gameContext.gameResult = 'All animals are killed!';
+    }
   }
 
   private updateGun() {
