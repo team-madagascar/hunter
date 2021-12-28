@@ -1,4 +1,4 @@
-# Lab 2(A)
+# Lab 3(A) Hunter 
 Run
 
 1. npm install
