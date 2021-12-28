@@ -1,23 +1,18 @@
-import {Drawable} from './Drawable';
 import {Circle} from './Circle';
 import {Point} from './Point';
-import {FrameRenderingContext} from './FrameRenderingContext';
-import {
-  BULLETS_COUNT,
-  GAME_FIELD_HEIGHT,
-  GAME_FIELD_WIDTH,
-  HUNTER_VELOCITY,
-} from './constants';
+import {BULLETS_COUNT, HUNTER_VELOCITY} from './constants';
 import {GameContext} from './GameContext';
+import {Entity} from './Entity';
 
-export class Hunter implements Drawable {
+export class Hunter extends Entity {
   constructor(
-    private readonly shape: Circle,
+    shape: Circle,
     private _bulletsCount: number = BULLETS_COUNT,
-    private _direction: Point | null = null,
-    private _velocity: number = HUNTER_VELOCITY,
-    private _isAlive: boolean = true
-  ) {}
+    _direction: Point | null = null,
+    _velocity: number = HUNTER_VELOCITY
+  ) {
+    super(shape.center, _velocity, _direction, shape.radius, shape.color);
+  }
 
   private _distanceToAnimal = 0;
 
@@ -36,16 +31,12 @@ export class Hunter implements Drawable {
     return this._bulletsCount > 0;
   }
 
-  render(context: FrameRenderingContext): void {
-    this.shape.render(context);
-  }
-
   update(secondsPassed: number, gameContext: GameContext): void {
     if (this._direction !== null) {
       this.checkBoundary();
-      this.shape.center = this._direction
+      this.center = this._direction
         .scale(this.velocity * secondsPassed)
-        .add(this.shape.center);
+        .add(this.center);
     }
     this.checkGameOver(gameContext);
     this.calcDistanceToSomeAnimal(gameContext);
@@ -59,35 +50,18 @@ export class Hunter implements Drawable {
   }
 
   private checkGameOver(gameContext: GameContext) {
-    gameContext.gameOver = this.checkBoundary();
-    if (gameContext.gameOver) {
+    if (this.checkBoundary() || !this._isAlive) {
+      gameContext.gameOver = true;
       gameContext.gameResult = 'You are dead!';
     }
   }
 
-  checkBoundary(): boolean {
-    return (
-      this.position.x - this.shape.radius < -GAME_FIELD_WIDTH ||
-      this.position.x + this.shape.radius > GAME_FIELD_WIDTH ||
-      this.position.y - this.shape.radius < -GAME_FIELD_HEIGHT ||
-      this.position.y + this.shape.radius > GAME_FIELD_HEIGHT
-    );
-  }
-
-  get isAlive(): boolean {
-    return this._isAlive;
-  }
-
-  get velocity(): number {
-    return this._velocity;
-  }
-
   get position(): Point {
-    return this.shape.center;
+    return this.center;
   }
 
   set position(newPos: Point) {
-    this.shape.center = newPos;
+    this.center = newPos;
   }
 
   get distanceToAnimal(): number {

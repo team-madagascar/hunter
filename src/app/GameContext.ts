@@ -1,8 +1,10 @@
 import {Hunter} from './Hunter';
 import {Drawable} from './Drawable';
 import {Point} from './Point';
-import {Animal} from './Animal';
+import {Rabbit} from './Rabbit';
 import {Bullet} from './Bullet';
+import {Animal} from './Animal';
+import {Entity} from './Entity';
 
 export class GameContext {
   constructor(
