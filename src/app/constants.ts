@@ -4,6 +4,13 @@ export const SCALE = 1;
 
 export const BG_COLOR = 'green';
 
+export const ANIMALS_COUNT = 10;
+export const ANIMAL_VELOCITY = 500;
+export const ANIMAL_SAFE_RADUIS = 400;
+
+export const HUNTER_VELOCITY = 450;
+export const BULLETS_COUNT = 60;
+
 export const FIELD_WIDTH = GAME_FIELD_WIDTH * 2;
 export const FIELD_HEIGHT = GAME_FIELD_HEIGHT * 2;
 

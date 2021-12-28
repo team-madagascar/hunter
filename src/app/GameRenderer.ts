@@ -86,15 +86,18 @@ export class GameRenderer {
   private drawInfo(hunter: Hunter) {
     this.ctx.font = '25px Arial';
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText(
-      `Bullets: ${hunter.bulletsCount}, Animals: ${this.gameContext.animals.length}`,
-      10,
-      30
-    );
+    let text = `Bullets: ${hunter.bulletsCount}, Animals: ${this.gameContext.animals.length}`;
+    if (this.gameContext.distanceToAnimal !== null) {
+      text += `, Distance to some Animal: ${Math.floor(
+        hunter.distanceToAnimal
+      )}`;
+    }
+    this.ctx.fillText(text, 10, 30);
   }
 
   gameOver() {
     alert(this.gameContext.gameResult);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   private renderDrawables() {

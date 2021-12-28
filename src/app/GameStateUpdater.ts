@@ -3,6 +3,7 @@ import {GameContext} from './GameContext';
 import {Point} from './Point';
 import {MouseListener} from './MouseListener';
 import {Bullet} from './Bullet';
+import {ANIMALS_COUNT} from './constants';
 
 export class GameStateUpdater {
   private readonly hunterKeyboardManager = new HunterKeyboardManager();
@@ -16,7 +17,18 @@ export class GameStateUpdater {
     this.updateHunterMovementDirection();
     this.updateDrawables(secondsPassed);
     this.updateGun();
+    this.updateDistanceToAnimal();
     this.checkGameIsEnd();
+  }
+
+  private updateDistanceToAnimal() {
+    const animals = this.gameContext.animals;
+    if (animals.length < ANIMALS_COUNT / 2 || animals.length === 1) {
+      this.gameContext.distanceToAnimal =
+        this.gameContext.hunter.distanceToAnimal;
+    } else {
+      this.gameContext.distanceToAnimal = null;
+    }
   }
 
   private checkGameIsEnd() {

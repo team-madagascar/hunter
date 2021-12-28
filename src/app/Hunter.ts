@@ -3,21 +3,23 @@ import {Circle} from './Circle';
 import {Point} from './Point';
 import {FrameRenderingContext} from './FrameRenderingContext';
 import {
-  FIELD_HEIGHT,
-  FIELD_WIDTH,
+  BULLETS_COUNT,
   GAME_FIELD_HEIGHT,
   GAME_FIELD_WIDTH,
+  HUNTER_VELOCITY,
 } from './constants';
 import {GameContext} from './GameContext';
 
 export class Hunter implements Drawable {
   constructor(
-    private _bulletsCount: number,
     private readonly shape: Circle,
-    private _direction: Point | null,
-    private _velocity: number,
+    private _bulletsCount: number = BULLETS_COUNT,
+    private _direction: Point | null = null,
+    private _velocity: number = HUNTER_VELOCITY,
     private _isAlive: boolean = true
   ) {}
+
+  private _distanceToAnimal = 0;
 
   get bulletsCount(): number {
     return this._bulletsCount;
@@ -41,11 +43,22 @@ export class Hunter implements Drawable {
   update(secondsPassed: number, gameContext: GameContext): void {
     if (this._direction !== null) {
       this.checkBoundary();
-      console.log('H: ' + secondsPassed);
       this.shape.center = this._direction
         .scale(this.velocity * secondsPassed)
         .add(this.shape.center);
     }
+    this.checkGameOver(gameContext);
+    this.calcDistanceToSomeAnimal(gameContext);
+  }
+
+  private calcDistanceToSomeAnimal(gameContext: GameContext) {
+    const animals = gameContext.animals;
+    if (animals.length !== 0) {
+      this._distanceToAnimal = this.position.distance(animals[0].center);
+    }
+  }
+
+  private checkGameOver(gameContext: GameContext) {
     gameContext.gameOver = this.checkBoundary();
     if (gameContext.gameOver) {
       gameContext.gameResult = 'You are dead!';
@@ -75,6 +88,10 @@ export class Hunter implements Drawable {
 
   set position(newPos: Point) {
     this.shape.center = newPos;
+  }
+
+  get distanceToAnimal(): number {
+    return this._distanceToAnimal;
   }
 
   get moveDirection(): Point {

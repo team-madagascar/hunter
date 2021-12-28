@@ -2,11 +2,12 @@ import {Circle} from './Circle';
 import {Point} from './Point';
 import {GameContext} from './GameContext';
 import {
-  FIELD_HEIGHT,
-  FIELD_WIDTH,
+  ANIMAL_SAFE_RADUIS,
+  ANIMAL_VELOCITY,
   GAME_FIELD_HEIGHT,
   GAME_FIELD_WIDTH,
 } from './constants';
+import {Hunter} from './Hunter';
 
 export class Animal extends Circle {
   private _isAlive = true;
@@ -15,7 +16,7 @@ export class Animal extends Circle {
 
   constructor(
     center: Point | null = null,
-    public readonly velocity = 300,
+    public readonly velocity = ANIMAL_VELOCITY,
     private _direction: Point | null = null,
     radius = 15,
     color = 'blue'
@@ -30,19 +31,23 @@ export class Animal extends Circle {
   update(secondsPassed: number, gameContext: GameContext) {
     const hunter = gameContext.hunter;
     const distanceToHunter = hunter.position.distance(this.center);
-    if (distanceToHunter < 500) {
-      const distance = this.velocity * secondsPassed;
-      const direction = Point.vector(hunter.position, this.center).unit();
-      this._direction = direction;
-      this.center = direction.scale(distance).add(this.center);
+    if (distanceToHunter < ANIMAL_SAFE_RADUIS) {
+      this.runAway(secondsPassed, hunter);
     } else {
-      this.randomDirection(secondsPassed);
+      this.moveToRandomDirection(secondsPassed);
     }
 
     this._isAlive = !this.checkBoundary();
   }
 
-  private randomDirection(secondsPassed: number) {
+  private runAway(secondsPassed: number, hunter: Hunter) {
+    const distance = this.velocity * secondsPassed;
+    const direction = Point.vector(hunter.position, this.center).unit();
+    this._direction = direction;
+    this.center = direction.scale(distance).add(this.center);
+  }
+
+  private moveToRandomDirection(secondsPassed: number) {
     if (this._direction !== null) {
       const distance = this.velocity * secondsPassed;
       this.currentDistance += distance;
@@ -53,13 +58,16 @@ export class Animal extends Circle {
       }
       const prevCenter = this.center;
       this.center = this._direction.scale(distance).add(this.center);
+      this.goAwayFromBound(distance, prevCenter);
+    }
+  }
 
-      while (this.checkBoundary()) {
-        this._direction = Animal.randomDirection();
-        this.currentDistance = 0;
-        this.maxDistance = 1000;
-        this.center = this._direction.scale(distance * 5).add(prevCenter);
-      }
+  private goAwayFromBound(distance: number, prevCenter: Point) {
+    while (this.checkBoundary()) {
+      this._direction = Animal.randomDirection();
+      this.currentDistance = 0;
+      this.maxDistance = 1000;
+      this.center = this._direction.scale(distance * 5).add(prevCenter);
     }
   }
 
@@ -96,12 +104,12 @@ export class Animal extends Circle {
   }
 
   private static randomPosition() {
-    const gap = 500;
-    const point = Point.of(
-      Animal.randomWithinInterval(gap, GAME_FIELD_WIDTH - gap),
-      Animal.randomWithinInterval(gap, GAME_FIELD_HEIGHT - gap)
+    const gapH = GAME_FIELD_HEIGHT / 6;
+    const gapW = GAME_FIELD_WIDTH / 6;
+    return Point.of(
+      Animal.randomWithinInterval(gapW, GAME_FIELD_WIDTH - gapW),
+      Animal.randomWithinInterval(gapH, GAME_FIELD_HEIGHT - gapH)
     );
-    return point;
   }
 
   private static randomWithinInterval(min: number, max: number) {

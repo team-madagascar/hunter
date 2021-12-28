@@ -10,7 +10,8 @@ export class GameContext {
     private _drawables: Drawable[],
     private readonly canvas: HTMLCanvasElement,
     public gameOver: boolean = false,
-    public gameResult: string = ''
+    public gameResult: string = '',
+    public distanceToAnimal: number | null = null
   ) {}
 
   mapCanvasPointToGameFieldPoint(canvasPoint: Point): Point {

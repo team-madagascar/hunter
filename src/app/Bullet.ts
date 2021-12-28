@@ -10,7 +10,7 @@ export class Bullet extends Circle {
     pos: Point,
     private readonly direction: Point,
     private readonly velocity: number = 1500,
-    private readonly maxDistance: number = 700
+    private readonly maxDistance: number = 1200
   ) {
     super(pos, 5, 'red');
   }
